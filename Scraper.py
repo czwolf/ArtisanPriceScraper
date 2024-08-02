@@ -99,6 +99,18 @@ class Scraper:
 
 
     @classmethod
+    def check_data_length(cls, scraped_data_csv: str):
+        """
+        Check if scraped_data.csv contains data
+        """
+        try:
+            df = pd.read_csv(scraped_data_csv, sep=";")
+            return len(df)
+        except FileNotFoundError:
+            return "File not found"
+
+
+    @classmethod
     def plot_scraped_data(cls, scraped_data_csv: str):
         """
         Method prepares plot.
@@ -119,6 +131,7 @@ class Scraper:
         except FileNotFoundError:
             return "File not found"
 
+
     @classmethod
     def get_max_product_price(cls, csv_file: str, product_name: str) -> float:
         try:
@@ -130,8 +143,63 @@ class Scraper:
             return "File not found."
 
 
+    @classmethod
+    def get_min_product_price(cls, csv_file: str, product_name: str) -> float:
+        try:
+            df = pd.read_csv(csv_file, sep=";")
+            product = df.loc[df["product"] == product_name]
+            min_price = float(product.price.min())
+            return min_price
+        except FileNotFoundError:
+            return "File not found."
+
+    @classmethod
+    def get_average_product_price(cls, csv_file: str, product_name: str) -> float:
+        try:
+            df = pd.read_csv(csv_file, sep=";")
+            product = df.loc[df["product"] == product_name]
+            avg_price = float(product.price.mean())
+            return round(avg_price,2)
+        except FileNotFoundError:
+            return "File not found."
+
+    @classmethod
+    def get_current_product_price(cls, csv_file: str, product_name: str) -> float:
+        try:
+            df = pd.read_csv(csv_file, sep=";")
+            product = df.loc[df["product"] == product_name]
+            current_price = float(product["price"].tail(1))
+            return current_price
+        except FileNotFoundError:
+            return "File not found."
+
+    @classmethod
+    def get_delta_product_price(cls, csv_file: str, product_name: str) -> float:
+        try:
+            df = pd.read_csv(csv_file, sep=";")
+            product = df.loc[df["product"] == product_name]
+            previous_price = product["price"].iloc[-2]
+            current_price = product["price"].tail(1)
+            delta = current_price-previous_price
+            return float(delta)
+        except FileNotFoundError:
+            return "File not found."
+
+
+    @classmethod
+    def check_data_length(cls, csv_file: str):
+        try:
+            df = pd.read_csv(csv_file, sep=";")
+            return len(df)
+        except FileNotFoundError:
+            return "File not found."
+
+
 if __name__ == '__main__':
     Scraper.check_csv_exists()
-    Scraper.save_scraped_data_to_csv(UrlList.PATH)
-    Scraper.remove_duplicity_from_scraped_data(Scraper.CSVPATH)
-    Scraper.plot_scraped_data(Scraper.CSVPATH)
+    if Scraper.check_data_length(UrlList.PATH) !=0:
+        Scraper.save_scraped_data_to_csv(UrlList.PATH)
+        Scraper.remove_duplicity_from_scraped_data(Scraper.CSVPATH)
+        Scraper.plot_scraped_data(Scraper.CSVPATH)
+    else:
+        print("Soubor url.csv neobsahuje žádné produkty ke sledování.")
