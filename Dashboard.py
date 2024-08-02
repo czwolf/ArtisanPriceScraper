@@ -18,9 +18,11 @@ if __name__ == '__main__':
     if option:
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.metric("Aktuální cena", Scraper.get_current_product_price(Scraper.CSVPATH, option), Scraper.get_delta_product_price(Scraper.CSVPATH, option))
+            st.metric("Aktuální cena", Scraper.get_current_product_price(Scraper.CSVPATH, option),
+                      Scraper.get_delta_product_price(Scraper.CSVPATH, option))
             if Scraper.get_delta_product_price(Scraper.CSVPATH, option) < 0:
-                st.write(f"Aktuální cena se snížila o {abs(Scraper.get_delta_product_price(Scraper.CSVPATH, option))}Kč")
+                st.write(
+                    f"Aktuální cena se snížila o {abs(Scraper.get_delta_product_price(Scraper.CSVPATH, option))}Kč")
             elif Scraper.get_delta_product_price(Scraper.CSVPATH, option) > 0:
                 st.write(f"Aktuální cena se zvýšila o {Scraper.get_delta_product_price(Scraper.CSVPATH, option)}Kč")
             else:

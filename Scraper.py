@@ -28,7 +28,6 @@ class Scraper:
             df = pd.DataFrame(columns=cls.COLUMNS)
             df.to_csv(cls.CSVPATH, sep=";", index=False)
 
-
     @classmethod
     def scrape_data(cls, product_name: str, url: str) -> dict:
         """
@@ -44,7 +43,6 @@ class Scraper:
         price = round(float(price_text), 2)
         today = datetime.today().strftime("%d.%m.%Y")
         return {"date": today, "product": product_name, "price": price}
-
 
     @classmethod
     def save_scraped_data_to_csv(cls, scraped_data_csv: str) -> None:
@@ -67,7 +65,6 @@ class Scraper:
                         writer.writeheader()
                     writer.writerow(scraped_data)
                     print(f"{scraped_data}: row saved")
-
 
     @classmethod
     def remove_duplicity_from_scraped_data(cls, scraped_data_csv: str):
@@ -97,7 +94,6 @@ class Scraper:
         except FileNotFoundError:
             return "File not found"
 
-
     @classmethod
     def check_data_length(cls, scraped_data_csv: str):
         """
@@ -108,7 +104,6 @@ class Scraper:
             return len(df)
         except FileNotFoundError:
             return "File not found"
-
 
     @classmethod
     def plot_scraped_data(cls, scraped_data_csv: str):
@@ -131,7 +126,6 @@ class Scraper:
         except FileNotFoundError:
             return "File not found"
 
-
     @classmethod
     def get_max_product_price(cls, csv_file: str, product_name: str) -> float:
         try:
@@ -141,7 +135,6 @@ class Scraper:
             return max_price
         except FileNotFoundError:
             return "File not found."
-
 
     @classmethod
     def get_min_product_price(cls, csv_file: str, product_name: str) -> float:
@@ -159,7 +152,7 @@ class Scraper:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
             avg_price = float(product.price.mean())
-            return round(avg_price,2)
+            return round(avg_price, 2)
         except FileNotFoundError:
             return "File not found."
 
@@ -180,11 +173,10 @@ class Scraper:
             product = df.loc[df["product"] == product_name]
             previous_price = product["price"].iloc[-2]
             current_price = product["price"].tail(1)
-            delta = current_price-previous_price
+            delta = current_price - previous_price
             return float(delta)
         except FileNotFoundError:
             return "File not found."
-
 
     @classmethod
     def check_data_length(cls, csv_file: str):
@@ -197,7 +189,7 @@ class Scraper:
 
 if __name__ == '__main__':
     Scraper.check_csv_exists()
-    if Scraper.check_data_length(UrlList.PATH) !=0:
+    if Scraper.check_data_length(UrlList.PATH) != 0:
         Scraper.save_scraped_data_to_csv(UrlList.PATH)
         Scraper.remove_duplicity_from_scraped_data(Scraper.CSVPATH)
         Scraper.plot_scraped_data(Scraper.CSVPATH)
