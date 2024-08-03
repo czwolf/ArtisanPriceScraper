@@ -94,6 +94,23 @@ class Scraper:
         except FileNotFoundError:
             return "File not found"
 
+
+    @classmethod
+    def delete_unwanted_scraped_data(cls, product_name: str, scraped_data_csv: str):
+        """
+        Method delete unwanted product from scraped data.
+        :param scraped_data_csv: str
+        :param product_name: str
+        :return: pd.Dataframe or str
+        """
+        try:
+            df = pd.read_csv(scraped_data_csv, sep=";")
+            product_df = df.loc[df["product"] != product_name]
+            product_df.to_csv(Scraper.CSVPATH, sep=";")
+        except FileNotFoundError:
+            return "File not found"
+
+
     @classmethod
     def check_data_length(cls, scraped_data_csv: str):
         """
