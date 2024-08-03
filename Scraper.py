@@ -108,7 +108,7 @@ class Scraper:
     @classmethod
     def plot_scraped_data(cls, scraped_data_csv: str):
         """
-        Method prepares plot.
+        Method prepares graph for drawing on the streamlit site.
         :param scraped_data_csv: str
         :return: plot or str
         """
@@ -128,6 +128,12 @@ class Scraper:
 
     @classmethod
     def get_max_product_price(cls, csv_file: str, product_name: str) -> float:
+        """
+        Get historically maximal product's price
+        :param csv_file: str
+        :param product_name: str
+        :return: float
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
@@ -138,6 +144,12 @@ class Scraper:
 
     @classmethod
     def get_min_product_price(cls, csv_file: str, product_name: str) -> float:
+        """
+        Get historically minimal product's price
+        :param csv_file: str
+        :param product_name: str
+        :return: float
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
@@ -148,6 +160,12 @@ class Scraper:
 
     @classmethod
     def get_average_product_price(cls, csv_file: str, product_name: str) -> float:
+        """
+        Get historically average product's price
+        :param csv_file: str
+        :param product_name: str
+        :return: float
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
@@ -158,6 +176,12 @@ class Scraper:
 
     @classmethod
     def get_current_product_price(cls, csv_file: str, product_name: str) -> float:
+        """
+        Get current product's price
+        :param csv_file: str
+        :param product_name: str
+        :return: float
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
@@ -168,6 +192,12 @@ class Scraper:
 
     @classmethod
     def get_delta_product_price(cls, csv_file: str, product_name: str) -> float:
+        """
+        Get product's price difference between current price and previous price.
+        :param csv_file: str
+        :param product_name: str
+        :return: float
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
@@ -179,7 +209,12 @@ class Scraper:
             return "File not found."
 
     @classmethod
-    def check_data_length(cls, csv_file: str):
+    def check_data_length(cls, csv_file: str) -> int:
+        """
+        Get length of dataframe
+        :param csv_file: str
+        :return: int
+        """
         try:
             df = pd.read_csv(csv_file, sep=";")
             return len(df)
