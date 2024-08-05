@@ -20,13 +20,16 @@ if __name__ == '__main__':
         with col1:
             st.metric("Aktuální cena", Scraper.get_current_product_price(Scraper.CSVPATH, option),
                       Scraper.get_delta_product_price(Scraper.CSVPATH, option))
-            if Scraper.get_delta_product_price(Scraper.CSVPATH, option) < 0:
-                st.write(
-                    f"Aktuální cena se snížila o {abs(Scraper.get_delta_product_price(Scraper.CSVPATH, option))}Kč")
-            elif Scraper.get_delta_product_price(Scraper.CSVPATH, option) > 0:
-                st.write(f"Aktuální cena se zvýšila o {Scraper.get_delta_product_price(Scraper.CSVPATH, option)}Kč")
+            if not Scraper.get_delta_product_price(Scraper.CSVPATH, option):
+                if Scraper.get_delta_product_price(Scraper.CSVPATH, option) < 0:
+                    st.write(
+                        f"Aktuální cena se snížila o {abs(Scraper.get_delta_product_price(Scraper.CSVPATH, option))}Kč")
+                elif Scraper.get_delta_product_price(Scraper.CSVPATH, option) > 0:
+                    st.write(f"Aktuální cena se zvýšila o {Scraper.get_delta_product_price(Scraper.CSVPATH, option)}Kč")
+                else:
+                    st.write(f"Aktuální cena se od minule nezměnila.")
             else:
-                st.write(f"Aktuální cena se od minule nezměnila.")
+                st.write("Pro vyhodnocení není dostatek záznamů.")
         with col2:
             st.metric("Nejvyšší cena", Scraper.get_max_product_price(Scraper.CSVPATH, option))
         with col3:
