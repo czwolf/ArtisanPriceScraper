@@ -218,10 +218,13 @@ class Scraper:
         try:
             df = pd.read_csv(csv_file, sep=";")
             product = df.loc[df["product"] == product_name]
-            previous_price = product["price"].iloc[-2]
-            current_price = product["price"].tail(1)
-            delta = current_price - previous_price
-            return float(delta)
+            if len(df) > 2:
+                previous_price = product["price"].iloc[-2]
+                current_price = product["price"].tail(1)
+                delta = current_price - previous_price
+                return float(delta)
+            else:
+                return False
         except FileNotFoundError:
             return "File not found."
 
