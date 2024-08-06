@@ -5,14 +5,16 @@ from bs4 import BeautifulSoup
 import csv
 from pages.modules.url_list import UrlList
 import plotly.express as px
+import os
 
 
 class Scraper:
     """
     Price scraper for artisan.cz website
     """
-
-    CSVPATH = "scraped_data.csv"
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    CSV = "scraped_data.csv"
+    CSVPATH = os.path.join(PROJECT_ROOT, CSV)
     COLUMNS = ["date", "product", "price"]
 
     @classmethod
@@ -45,12 +47,12 @@ class Scraper:
         return {"date": today, "product": product_name, "price": price}
 
     @classmethod
-    def save_scraped_data_to_csv(cls, scraped_data_csv: str) -> None:
+    def save_scraped_data_to_csv(cls, url_list: str) -> None:
         """
         It iterate over csv file with products for which you want scrape data
         :param scraped_data_csv: str - file name of csv file with product names and urls
         """
-        with open(scraped_data_csv, 'r', encoding='utf-8') as csv_file:
+        with open(url_list, 'r', encoding='utf-8') as csv_file:
             data = csv.reader(csv_file, delimiter=';', dialect='excel')
             data = iter(data)
             next(data)
@@ -244,6 +246,7 @@ class Scraper:
 
 if __name__ == '__main__':
     Scraper.check_csv_exists()
+    print(UrlList.PATH)
     if Scraper.check_data_length(UrlList.PATH) != 0:
         Scraper.save_scraped_data_to_csv(UrlList.PATH)
         Scraper.remove_duplicity_from_scraped_data(Scraper.CSVPATH)

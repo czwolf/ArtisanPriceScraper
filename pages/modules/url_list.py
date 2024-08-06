@@ -1,9 +1,12 @@
 import pandas as pd
 import csv
+import os
 
 
 class UrlList:
-    PATH = "url.csv"
+    PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+    CSV = "url.csv"
+    PATH = os.path.join(PROJECT_ROOT, CSV)
     COLUMNS = ["name", "url"]
 
     @classmethod
